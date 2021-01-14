@@ -20,8 +20,8 @@ namespace Virtuplex.SampleCalculator.Services
         /// This functionality was only created for generating a file and is not performance optimized. 
         /// </summary>
         /// <param name="fileName">Output file.</param>
-        /// <param name="progress">Progress kokotin</param>
-        /// <param name="token"></param>
+        /// <param name="progress">Progress reported to ui.</param>
+        /// <param name="token">Cancellation token.</param>
         /// <returns></returns>
         public async Task<bool> GenerateFile(string fileName, IProgress<string> progress, CancellationToken token)
         {
