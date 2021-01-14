@@ -64,7 +64,7 @@ namespace Virtuplex.SampleCalculator.Services
                             // Add some blanks
                             if (line % 15 == 0)
                             {
-                                sw.WriteLine("   ");
+                                sw.WriteLine(" ");
                             }
 
                             for (var i = 0; i <= maxOperations; i++)
