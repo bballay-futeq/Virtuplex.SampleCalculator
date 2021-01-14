@@ -67,9 +67,7 @@ namespace Virtuplex.SampleCalculator.Services
 
                         // If the line is empty then continue.
                         if (string.IsNullOrWhiteSpace(line))
-                        {
-                            output.WriteLine(string.Empty);
-
+                        { 
                             continue;
                         }
 
@@ -120,7 +118,7 @@ namespace Virtuplex.SampleCalculator.Services
                                     }
                                     else
                                     {
-                                        await output.WriteLineAsync($"Invalid characted '{line[i]}'");
+                                        await output.WriteLineAsync($"Error - Invalid character: '{line[i]}'");
                                         hasError = true;
 
                                         break;
@@ -141,7 +139,7 @@ namespace Virtuplex.SampleCalculator.Services
                             }
                              
                             // No allowed charfound, write an error and break loop.
-                            await output.WriteLineAsync($"Invalid characted '{line[i]}'");
+                            await output.WriteLineAsync($"Error - Invalid character: '{line[i]}'");
                             hasError = true;
 
                             break;

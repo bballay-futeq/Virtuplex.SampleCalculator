@@ -153,14 +153,14 @@ namespace Virtuplex.SampleCalculator.ViewModels
         /// <summary>
         /// Calculates the current expression.
         /// </summary>
-        private async void OnCalculateExpressionCommand()
+        private void OnCalculateExpressionCommand()
         {
             if (CurrentValue != "0")
             {
                 Expression.Add(new ExpressionMember(CurrentValue));
             }
 
-            var result = await _calculator.Calculate(Expression.ToList());
+            var result = _calculator.Calculate(Expression.ToList());
 
             CurrentValue = result.ToString();
 

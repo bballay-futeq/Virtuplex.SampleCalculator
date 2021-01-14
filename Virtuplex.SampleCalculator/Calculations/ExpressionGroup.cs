@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 
@@ -14,6 +15,37 @@ namespace Virtuplex.SampleCalculator.Calculations
         /// Contains group members. Im using list as it has better performance for smaller ammount of items than hashset. 
         /// </summary>
         public List<IExpressionMember> Members { get; set; } = new List<IExpressionMember>();
+
+        public ExpressionGroup() { }
+
+        public ExpressionGroup(IEnumerable<IExpressionMember> members)
+        {
+            Members = members.ToList();
+        }
+
+        /// <summary>
+        /// Creates a group from string params.
+        /// </summary>
+        /// <param name="members"></param>
+        /// <returns></returns>
+        public static ExpressionGroup FromArray(params string[] members)
+        {
+            var group = new ExpressionGroup();
+
+            foreach(var member in members)
+            {
+                switch (member)
+                {
+                    case "+": group.Members.Add(new ExpressionOperator(OperationType.Add)); break;
+                    case "-": group.Members.Add(new ExpressionOperator(OperationType.Subtract)); break;
+                    case "*": group.Members.Add(new ExpressionOperator(OperationType.Multiply)); break;
+                    case "/": group.Members.Add(new ExpressionOperator(OperationType.Divide)); break;
+                    default: group.Members.Add(new ExpressionMember(member)); break;
+                }
+            }
+
+            return group;
+        }
 
         /// <summary>
         /// Calulates the value of group members.
@@ -69,5 +101,5 @@ namespace Virtuplex.SampleCalculator.Calculations
 
             return returnValue;
         }
-    }
+    } 
 }

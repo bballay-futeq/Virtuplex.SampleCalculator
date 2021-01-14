@@ -17,7 +17,7 @@ namespace Virtuplex.SampleCalculator.Services
         /// </summary>
         /// <param name="expressionMembers">All parts of expression.</param>
         /// <returns></returns>
-        public async Task<BigInteger> Calculate(List<ExpressionMember> expressionMembers)
+        public BigInteger Calculate(List<ExpressionMember> expressionMembers)
         {
             if (expressionMembers.Count == 0)
             {
@@ -34,8 +34,6 @@ namespace Virtuplex.SampleCalculator.Services
             {
                 Members = groups
             };
-
-            await Task.CompletedTask;
 
             var result = resultGroup.GetValue();
 
