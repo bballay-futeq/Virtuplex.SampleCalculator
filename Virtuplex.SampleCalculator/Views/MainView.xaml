@@ -1,0 +1,119 @@
+﻿<Window x:Class="Virtuplex.SampleCalculator.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:viewmodels="clr-namespace:Virtuplex.SampleCalculator.ViewModels"
+        xmlns:calc="clr-namespace:Virtuplex.SampleCalculator.Calculations"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Background="{StaticResource BackgroundColor}"
+        MinWidth="500"
+        MinHeight="340"        
+        Title="Calculator" 
+        Height="500" 
+        Width="350">
+    <Window.DataContext>
+        <viewmodels:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibility" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="70*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Background="{StaticResource BackgroundColor}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ItemsControl ItemsSource="{Binding Expression}" Grid.Row="0" Margin="0,0,20,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>  
+                            <StackPanel Orientation="Horizontal" 
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Right" ></StackPanel> 
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{StaticResource TextColor}" Text="{Binding Value}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl> 
+            <Viewbox Grid.Row="1" HorizontalAlignment="Right">
+                <Label HorizontalAlignment="Right" 
+                       Foreground="{StaticResource TextColor}"
+                       Content="{Binding CurrentValue}"></Label>
+            </Viewbox>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="20*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource OperationButtonStyle}" Command="{Binding ClearEntryCommand}">CE</Button>
+            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource OperationButtonStyle}" Command="{Binding ClearCommand}">C</Button>
+            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource OperationButtonStyle}" Command="{Binding DelCommand}">Del</Button>
+            <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource OperationButtonStyle}" Command="{Binding OperationCommand}" CommandParameter="{x:Static calc:OperationType.Add}">+</Button>
+
+            <Button Grid.Row="1" Grid.Column="0" Command="{Binding InputNumberCommand}" CommandParameter="7">7</Button>
+            <Button Grid.Row="1" Grid.Column="1" Command="{Binding InputNumberCommand}" CommandParameter="8">8</Button>
+            <Button Grid.Row="1" Grid.Column="2" Command="{Binding InputNumberCommand}" CommandParameter="9">9</Button>
+            <Button Grid.Row="1" Grid.Column="3" Style="{StaticResource OperationButtonStyle}" Command="{Binding OperationCommand}" CommandParameter="{x:Static calc:OperationType.Subtract}">-</Button>
+
+            <Button Grid.Row="2" Grid.Column="0" Command="{Binding InputNumberCommand}" CommandParameter="4">4</Button>
+            <Button Grid.Row="2" Grid.Column="1" Command="{Binding InputNumberCommand}" CommandParameter="5">5</Button>
+            <Button Grid.Row="2" Grid.Column="2" Command="{Binding InputNumberCommand}" CommandParameter="6">6</Button>
+            <Button Grid.Row="2" Grid.Column="3" Style="{StaticResource OperationButtonStyle}" Command="{Binding OperationCommand}" CommandParameter="{x:Static calc:OperationType.Multiply}">*</Button>
+
+            <Button Grid.Row="3" Grid.Column="0" Command="{Binding InputNumberCommand}" CommandParameter="1">1</Button>
+            <Button Grid.Row="3" Grid.Column="1" Command="{Binding InputNumberCommand}" CommandParameter="2">2</Button>
+            <Button Grid.Row="3" Grid.Column="2" Command="{Binding InputNumberCommand}" CommandParameter="3">3</Button>
+            <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource OperationButtonStyle}" Command="{Binding OperationCommand}" CommandParameter="{x:Static calc:OperationType.Divide}">÷</Button>
+
+            <Button Grid.Row="4" Grid.Column="0" Command="{Binding LoadFileCommand}" CommandParameter="0">From file</Button>
+            <Button Grid.Row="4" Grid.Column="1" Command="{Binding InputNumberCommand}" CommandParameter="0">0</Button>
+            <Button Grid.Row="4" Grid.Column="2" Command="{Binding GenerateFileCommand}" CommandParameter="0">Generate file</Button>
+            <Button Grid.Row="4" Grid.Column="3" Style="{StaticResource OperationButtonStyle}" Command="{Binding CalculateExpressionCommand}">=</Button>
+        </Grid>
+
+        <Grid HorizontalAlignment="Stretch"
+              Grid.RowSpan="2" 
+              Background="#99000000"
+              Visibility="{Binding IsBusy, Converter={StaticResource boolToVisibility}}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Foreground="{StaticResource TextColor}" 
+                           HorizontalAlignment="Center"
+                           FontSize="{StaticResource FontSize}"
+                           Margin="0,0,0,10">Processing operation</TextBlock>
+                <ProgressBar IsIndeterminate="True" Width="300" />
+                <TextBlock Foreground="{StaticResource TextColor}" 
+                           HorizontalAlignment="Center"
+                           FontSize="{StaticResource FontSize}"
+                           Margin="0,10,0,10"
+                           Text="{Binding Status}">
+                </TextBlock>
+                <Button Style="{StaticResource OperationButtonStyle}" HorizontalAlignment="Center"
+                        Width="100"
+                        Command="{Binding CancelCommand}"
+                        Height="40">Cancel</Button>
+            </StackPanel>            
+        </Grid>
+    </Grid>
+</Window>
